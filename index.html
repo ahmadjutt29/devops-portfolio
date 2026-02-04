@@ -6326,35 +6326,61 @@
 
         // Mobile nav toggle - with touch support
         if (sideNavToggle && sideNav) {
-            function toggleMobileNav(e) {
-                e.preventDefault();
-                e.stopPropagation();
+            let touchHandled = false;
+            
+            function toggleMobileNav() {
                 const isOpen = sideNav.classList.toggle('open');
                 sideNavToggle.setAttribute('aria-expanded', isOpen);
                 sideNavToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
             }
             
-            sideNavToggle.addEventListener('click', toggleMobileNav);
+            function closeMobileNav() {
+                sideNav.classList.remove('open');
+                sideNavToggle.setAttribute('aria-expanded', 'false');
+                sideNavToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+            
+            // Handle touch events
+            sideNavToggle.addEventListener('touchstart', function(e) {
+                touchHandled = true;
+            }, { passive: true });
+            
             sideNavToggle.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                toggleMobileNav(e);
+                if (touchHandled) {
+                    e.preventDefault();
+                    toggleMobileNav();
+                    // Reset after a short delay
+                    setTimeout(() => { touchHandled = false; }, 300);
+                }
             }, { passive: false });
+            
+            // Handle click (for non-touch devices)
+            sideNavToggle.addEventListener('click', function(e) {
+                if (!touchHandled) {
+                    e.preventDefault();
+                    toggleMobileNav();
+                }
+            });
             
             // Close menu when clicking a link
             sideNavLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    sideNav.classList.remove('open');
-                    sideNavToggle.setAttribute('aria-expanded', 'false');
-                    sideNavToggle.innerHTML = '<i class="fas fa-bars"></i>';
-                });
+                link.addEventListener('click', closeMobileNav);
             });
             
-            // Close menu when clicking outside
+            // Close menu when clicking outside (with delay to prevent immediate close)
             document.addEventListener('click', (e) => {
-                if (!sideNav.contains(e.target) && !sideNavToggle.contains(e.target)) {
-                    sideNav.classList.remove('open');
-                    sideNavToggle.setAttribute('aria-expanded', 'false');
-                    sideNavToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                if (sideNav.classList.contains('open')) {
+                    if (!sideNav.contains(e.target) && !sideNavToggle.contains(e.target)) {
+                        closeMobileNav();
+                    }
+                }
+            });
+            
+            document.addEventListener('touchend', (e) => {
+                if (sideNav.classList.contains('open')) {
+                    if (!sideNav.contains(e.target) && !sideNavToggle.contains(e.target)) {
+                        closeMobileNav();
+                    }
                 }
             });
         }
