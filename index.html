@@ -3956,20 +3956,33 @@
 
         // Mobile Navigation Toggle
         function toggleSideNav() {
-            const sideNav = document.getElementById('sideNav');
-            const sideNavToggle = document.getElementById('sideNavToggle');
+            var sideNav = document.getElementById('sideNav');
+            var sideNavToggle = document.getElementById('sideNavToggle');
             if (sideNav && sideNavToggle) {
-                const isOpen = sideNav.classList.toggle('open');
-                sideNavToggle.setAttribute('aria-expanded', isOpen);
+                var isOpen = sideNav.classList.toggle('open');
+                sideNavToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 sideNavToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                console.log('Toggle clicked, isOpen:', isOpen);
             }
         }
         
-        // Detect touch device and add class to body
+        // Detect touch device and add class to body + setup touch handlers
         (function() {
             if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
                 document.body.classList.add('touch-device');
             }
+            
+            // Add touch event listener to toggle button when DOM is ready
+            document.addEventListener('DOMContentLoaded', function() {
+                var toggleBtn = document.getElementById('sideNavToggle');
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('touchstart', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleSideNav();
+                    }, { passive: false });
+                }
+            });
         })();
 
         // Mode Toggle with localStorage persistence
