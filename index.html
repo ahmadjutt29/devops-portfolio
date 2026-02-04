@@ -1638,6 +1638,18 @@
             font-weight: 800;
         }
 
+        .about-photo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .about-photo:hover .about-photo-img {
+            transform: scale(1.05);
+        }
+
         .about-panel:hover .about-photo {
             box-shadow: 0 0 20px rgba(0, 180, 216, 0.4);
         }
@@ -2755,8 +2767,8 @@
                 <span class="sub-title" id="about-label"><i class="fas fa-user"></i> 01. ABOUT ME</span>
                 
                 <div class="about-header">
-                    <div class="about-photo" role="img" aria-label="Ahmad Shakeel profile photo placeholder">
-                        <span class="about-photo-placeholder" aria-hidden="true">AS</span>
+                    <div class="about-photo" role="img" aria-label="Ahmad Shakeel profile photo">
+                        <img src="profile.png" alt="Ahmad Shakeel" class="about-photo-img">
                     </div>
                     <div class="about-header-text">
                         <h2 id="about-title">AHMAD SHAKEEL</h2>
