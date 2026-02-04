@@ -626,19 +626,23 @@
         /* Mobile Side Nav Toggle */
         .side-nav-toggle {
             display: none;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 200;
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
             background: var(--secondary);
             color: var(--bg);
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 20px var(--glow-strong);
-            font-size: 1.2rem;
+            box-shadow: 0 4px 15px var(--glow);
+            font-size: 1.1rem;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .side-nav-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px var(--glow-strong);
         }
         
         .side-nav-toggle:active {
@@ -649,25 +653,25 @@
             .side-nav {
                 right: 20px;
                 left: auto;
-                top: 80px;
+                top: 70px;
                 bottom: auto;
                 transform: none;
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease;
-                max-height: 70vh;
+                max-height: 60vh;
                 overflow-y: auto;
+                pointer-events: none;
             }
             
             .side-nav.open {
                 opacity: 1;
                 visibility: visible;
+                pointer-events: auto;
             }
             
             .side-nav-toggle {
                 display: flex;
-                align-items: center;
-                justify-content: center;
             }
         }
 
@@ -709,10 +713,27 @@
 
         /* UI Overlay */
         .nav {
-            position: fixed; top: 0; width: 100%; padding: 30px;
+            position: fixed; top: 0; width: 100%; padding: 20px 30px;
             display: flex; justify-content: space-between; align-items: center;
-            box-sizing: border-box; z-index: 100; font-family: 'JetBrains Mono';
+            box-sizing: border-box; z-index: 200; font-family: 'JetBrains Mono';
             font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+            background: linear-gradient(to bottom, var(--bg), transparent);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Hide hire status on mobile */
+        @media (max-width: 768px) {
+            .hire-status {
+                display: none;
+            }
+            .nav {
+                padding: 15px 20px;
+            }
         }
 
         .mode-toggle {
@@ -2918,19 +2939,19 @@
             <i class="fas fa-envelope"></i>
         </a>
     </nav>
-    
-    <!-- Mobile Nav Toggle -->
-    <button class="side-nav-toggle" id="sideNavToggle" aria-label="Toggle navigation menu" aria-expanded="false">
-        <i class="fas fa-bars"></i>
-    </button>
 
     <nav class="nav" role="navigation" aria-label="Main navigation">
         <div aria-hidden="true"><i class="fas fa-terminal" style="margin-right: 8px; color: var(--secondary);"></i>Ahmad Shakeel</div>
-        <div role="status" aria-live="polite"><i class="fas fa-circle" style="color: var(--tertiary); font-size: 0.5rem; margin-right: 6px; animation: pulse 2s infinite;"></i>Available for Hire</div>
-        <button class="mode-toggle" onclick="toggleMode()" aria-label="Toggle dark/light mode" type="button">
-            <span class="mode-toggle-icon" aria-hidden="true">🌙</span>
-            <span class="mode-toggle-text">Dark</span>
-        </button>
+        <div role="status" aria-live="polite" class="hire-status"><i class="fas fa-circle" style="color: var(--tertiary); font-size: 0.5rem; margin-right: 6px; animation: pulse 2s infinite;"></i>Available for Hire</div>
+        <div class="nav-buttons">
+            <button class="mode-toggle" onclick="toggleMode()" aria-label="Toggle dark/light mode" type="button">
+                <span class="mode-toggle-icon" aria-hidden="true">🌙</span>
+                <span class="mode-toggle-text">Dark</span>
+            </button>
+            <button class="side-nav-toggle" id="sideNavToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </nav>
 
     <div class="progress-wrap"><div class="progress-bar"></div></div>
