@@ -3001,9 +3001,9 @@
     </div>
     
     <!-- 3D Infrastructure Legend -->
-    <div class="legend-3d" id="legend3d">
+    <div class="legend-3d collapsed" id="legend3d">
         <button class="legend-3d-toggle" id="legendToggle" aria-label="Toggle legend">
-            <i class="fas fa-chevron-down"></i>
+            <i class="fas fa-chevron-up"></i>
         </button>
         <div class="legend-3d-title"><i class="fas fa-layer-group"></i> Infrastructure Map</div>
         <div class="legend-3d-items">
@@ -6324,12 +6324,38 @@
         window.addEventListener('scroll', updateActiveNavLink);
         updateActiveNavLink(); // Initial call
 
-        // Mobile nav toggle
-        if (sideNavToggle) {
-            sideNavToggle.addEventListener('click', () => {
+        // Mobile nav toggle - with touch support
+        if (sideNavToggle && sideNav) {
+            function toggleMobileNav(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 const isOpen = sideNav.classList.toggle('open');
                 sideNavToggle.setAttribute('aria-expanded', isOpen);
                 sideNavToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            }
+            
+            sideNavToggle.addEventListener('click', toggleMobileNav);
+            sideNavToggle.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                toggleMobileNav(e);
+            }, { passive: false });
+            
+            // Close menu when clicking a link
+            sideNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    sideNav.classList.remove('open');
+                    sideNavToggle.setAttribute('aria-expanded', 'false');
+                    sideNavToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!sideNav.contains(e.target) && !sideNavToggle.contains(e.target)) {
+                    sideNav.classList.remove('open');
+                    sideNavToggle.setAttribute('aria-expanded', 'false');
+                    sideNavToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                }
             });
         }
 
