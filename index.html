@@ -638,9 +638,59 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        /* Show toggle on touch devices regardless of screen size */
+        /* Show toggle on touch/pointer devices (CSS-only detection) */
+        @media (hover: none), (pointer: coarse) {
+            .side-nav-toggle {
+                display: flex !important;
+            }
+            
+            .side-nav {
+                position: fixed !important;
+                right: 20px !important;
+                left: auto !important;
+                top: 75px !important;
+                bottom: auto !important;
+                transform: none !important;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                max-height: 60vh;
+                overflow-y: auto;
+                pointer-events: none;
+                z-index: 250;
+                background: var(--bg-elevated);
+                border: 1px solid var(--secondary);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            }
+            
+            .side-nav.open {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+            }
+            
+            .side-nav-link::after {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                margin-left: 10px;
+            }
+            
+            .side-nav-link {
+                width: auto !important;
+                padding: 10px 15px !important;
+                justify-content: flex-start !important;
+                gap: 10px !important;
+            }
+        }
+        
+        /* Also show toggle on touch devices via JS class */
         .touch-device .side-nav-toggle {
             display: flex !important;
         }
