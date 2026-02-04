@@ -2971,7 +2971,7 @@
                 <span class="mode-toggle-icon" aria-hidden="true">🌙</span>
                 <span class="mode-toggle-text">Dark</span>
             </button>
-            <button class="side-nav-toggle" id="sideNavToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+            <button class="side-nav-toggle" id="sideNavToggle" aria-label="Toggle navigation menu" aria-expanded="false" onclick="toggleSideNav()">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -3856,6 +3856,17 @@
 
         // Store references for 3D color updates
         let innerCoreMaterial, particlesMaterial, pointLight;
+
+        // Mobile Navigation Toggle
+        function toggleSideNav() {
+            const sideNav = document.getElementById('sideNav');
+            const sideNavToggle = document.getElementById('sideNavToggle');
+            if (sideNav && sideNavToggle) {
+                const isOpen = sideNav.classList.toggle('open');
+                sideNavToggle.setAttribute('aria-expanded', isOpen);
+                sideNavToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            }
+        }
 
         // Mode Toggle with localStorage persistence
         function toggleMode() {
@@ -6324,64 +6335,18 @@
         window.addEventListener('scroll', updateActiveNavLink);
         updateActiveNavLink(); // Initial call
 
-        // Mobile nav toggle - with touch support
-        if (sideNavToggle && sideNav) {
-            let touchHandled = false;
-            
-            function toggleMobileNav() {
-                const isOpen = sideNav.classList.toggle('open');
-                sideNavToggle.setAttribute('aria-expanded', isOpen);
-                sideNavToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-            }
-            
-            function closeMobileNav() {
-                sideNav.classList.remove('open');
-                sideNavToggle.setAttribute('aria-expanded', 'false');
-                sideNavToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-            
-            // Handle touch events
-            sideNavToggle.addEventListener('touchstart', function(e) {
-                touchHandled = true;
-            }, { passive: true });
-            
-            sideNavToggle.addEventListener('touchend', function(e) {
-                if (touchHandled) {
-                    e.preventDefault();
-                    toggleMobileNav();
-                    // Reset after a short delay
-                    setTimeout(() => { touchHandled = false; }, 300);
-                }
-            }, { passive: false });
-            
-            // Handle click (for non-touch devices)
-            sideNavToggle.addEventListener('click', function(e) {
-                if (!touchHandled) {
-                    e.preventDefault();
-                    toggleMobileNav();
-                }
-            });
-            
+        // Close side nav when clicking a link or outside
+        if (sideNav) {
             // Close menu when clicking a link
             sideNavLinks.forEach(link => {
-                link.addEventListener('click', closeMobileNav);
-            });
-            
-            // Close menu when clicking outside (with delay to prevent immediate close)
-            document.addEventListener('click', (e) => {
-                if (sideNav.classList.contains('open')) {
-                    if (!sideNav.contains(e.target) && !sideNavToggle.contains(e.target)) {
-                        closeMobileNav();
+                link.addEventListener('click', () => {
+                    sideNav.classList.remove('open');
+                    const toggle = document.getElementById('sideNavToggle');
+                    if (toggle) {
+                        toggle.setAttribute('aria-expanded', 'false');
+                        toggle.innerHTML = '<i class="fas fa-bars"></i>';
                     }
-                }
-            });
-            
-            document.addEventListener('touchend', (e) => {
-                if (sideNav.classList.contains('open')) {
-                    if (!sideNav.contains(e.target) && !sideNavToggle.contains(e.target)) {
-                        closeMobileNav();
-                    }
-                }
+                });
             });
         }
 
