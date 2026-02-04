@@ -513,6 +513,20 @@
             z-index: 10;
             opacity: 0.7;
         }
+        
+        /* Show/hide hints based on device */
+        .mobile-hint {
+            display: none;
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+            .desktop-hint {
+                display: none;
+            }
+            .mobile-hint {
+                display: block;
+            }
+        }
 
         .architecture-modal-hint i {
             margin-right: 6px;
@@ -2342,6 +2356,292 @@
             }
         }
 
+        /* ======================================
+           COMPREHENSIVE MOBILE RESPONSIVENESS
+           ====================================== */
+        
+        /* Small Mobile Devices (320px - 480px) */
+        @media (max-width: 480px) {
+            html {
+                font-size: 14px;
+            }
+            
+            /* Hero Section */
+            .hero-title {
+                font-size: clamp(2.5rem, 15vw, 4rem);
+                line-height: 0.9;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.7rem;
+                letter-spacing: 1px;
+            }
+            
+            .hero-position {
+                gap: 8px;
+            }
+            
+            .position-badge {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+            }
+            
+            .position-badge i {
+                font-size: 1rem;
+            }
+            
+            .hero-bio {
+                font-size: 0.85rem;
+                line-height: 1.6;
+                margin-top: 20px;
+            }
+            
+            .hero-tags {
+                gap: 6px;
+            }
+            
+            .hero-tag {
+                font-size: 0.6rem;
+                padding: 6px 10px;
+            }
+            
+            /* Navigation */
+            .side-nav {
+                display: none;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            /* About Section */
+            .about-photo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .about-header-text h2 {
+                font-size: 1.2rem;
+            }
+            
+            .devops-metrics {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .metric-card {
+                padding: 12px;
+            }
+            
+            .metric-value {
+                font-size: 1.5rem;
+            }
+            
+            .metric-label {
+                font-size: 0.6rem;
+            }
+            
+            /* Skills Section */
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .skill-card {
+                padding: 12px;
+            }
+            
+            .skill-name {
+                font-size: 0.65rem;
+            }
+            
+            /* Projects Section */
+            .project-card {
+                padding: 20px;
+            }
+            
+            .project-title {
+                font-size: 1rem;
+            }
+            
+            /* Contact Section */
+            .contact-links {
+                gap: 10px !important;
+            }
+            
+            .contact-link-item {
+                font-size: 0.75rem;
+                padding: 8px 12px;
+            }
+            
+            /* Footer */
+            footer {
+                padding: 40px 15px;
+            }
+            
+            .footer-social {
+                gap: 15px;
+            }
+            
+            .footer-social a {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Medium Mobile Devices (481px - 768px) */
+        @media (max-width: 768px) and (min-width: 481px) {
+            .hero-title {
+                font-size: clamp(3rem, 12vw, 6rem);
+            }
+            
+            .position-badge {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+            
+            .devops-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Architecture View Mobile */
+        @media (max-width: 768px) {
+            .architecture-modal-header {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .architecture-modal-title {
+                font-size: 0.9rem;
+                flex: 1 1 100%;
+                justify-content: center;
+            }
+            
+            .architecture-modal-close {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+            
+            .architecture-modal-controls {
+                bottom: 15px;
+                padding: 8px 12px;
+                gap: 8px;
+                border-radius: 30px;
+            }
+            
+            .architecture-control-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 0.85rem;
+            }
+            
+            .architecture-modal-hint {
+                bottom: 70px;
+                font-size: 0.65rem;
+                padding: 0 20px;
+            }
+            
+            .view-architecture-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 14px;
+                font-size: 0.7rem;
+                border-radius: 30px;
+            }
+            
+            .view-architecture-btn span {
+                display: none;
+            }
+            
+            .view-architecture-btn i {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Touch-friendly adjustments */
+        @media (hover: none) and (pointer: coarse) {
+            .architecture-control-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+            
+            .view-architecture-btn {
+                min-width: 50px;
+                min-height: 50px;
+            }
+            
+            .architecture-modal-hint {
+                display: block;
+            }
+            
+            /* Disable hover effects that don't work on touch */
+            .hero-tag:hover,
+            .skill-card:hover,
+            .project-card:hover {
+                transform: none;
+            }
+        }
+        
+        /* Landscape Mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero-content {
+                padding-top: 60px;
+            }
+            
+            .hero-title {
+                font-size: clamp(2rem, 10vh, 3rem);
+            }
+            
+            .hero-position {
+                flex-direction: row;
+            }
+            
+            .position-divider {
+                display: block;
+            }
+            
+            .architecture-modal-controls {
+                bottom: 10px;
+            }
+            
+            .architecture-modal-hint {
+                display: none;
+            }
+        }
+        
+        /* Extra Small Screens */
+        @media (max-width: 320px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .position-badge {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+            
+            .devops-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         footer { 
             padding: 60px 20px; 
             text-align: center; 
@@ -2709,8 +3009,11 @@
             </button>
         </div>
         <canvas id="architectureCanvas"></canvas>
-        <div class="architecture-modal-hint">
+        <div class="architecture-modal-hint desktop-hint">
             <i class="fas fa-mouse-pointer"></i> Drag to rotate • Scroll to zoom • Right-click to pan
+        </div>
+        <div class="architecture-modal-hint mobile-hint">
+            <i class="fas fa-hand-pointer"></i> Drag to rotate • Pinch to zoom • Two fingers to pan
         </div>
         <div class="architecture-modal-controls">
             <button class="architecture-control-btn" id="zoomInBtn" title="Zoom In">
@@ -5823,6 +6126,13 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            // Also resize architecture view if active
+            if (isArchitectureViewActive && archRenderer && archCamera) {
+                archRenderer.setSize(window.innerWidth, window.innerHeight);
+                archCamera.aspect = window.innerWidth / window.innerHeight;
+                archCamera.updateProjectionMatrix();
+            }
         });
 
         // ============================================
@@ -6187,15 +6497,31 @@
                 initArchitectureView();
             }
             
+            // Resize to current viewport (important for mobile orientation changes)
+            if (archRenderer && archCamera) {
+                archRenderer.setSize(window.innerWidth, window.innerHeight);
+                archCamera.aspect = window.innerWidth / window.innerHeight;
+                archCamera.updateProjectionMatrix();
+            }
+            
             // Add mouse events for tooltips in architecture view
             architectureCanvas.addEventListener('mousemove', onMouseMove, false);
             architectureCanvas.addEventListener('click', onClick, false);
             
+            // Add touch events for mobile
+            architectureCanvas.addEventListener('touchstart', onTouchStart, false);
+            architectureCanvas.addEventListener('touchend', onTouchEnd, false);
+            
             // Reveal all objects so user can see complete architecture
             revealAllObjects();
             
-            // Reset camera position
-            archCamera.position.set(25, 18, 30);
+            // Reset camera position - closer for mobile
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                archCamera.position.set(35, 25, 40);
+            } else {
+                archCamera.position.set(25, 18, 30);
+            }
             archControls.target.set(0, 0, 0);
             archControls.update();
             
@@ -6204,6 +6530,28 @@
 
             // Pause scroll triggers (but animations keep running)
             ScrollTrigger.getAll().forEach(st => st.disable());
+        }
+        
+        // Touch event handlers for mobile
+        let touchStartTime = 0;
+        
+        function onTouchStart(event) {
+            touchStartTime = Date.now();
+        }
+        
+        function onTouchEnd(event) {
+            // Only trigger tooltip on quick taps (not drags)
+            const touchDuration = Date.now() - touchStartTime;
+            if (touchDuration < 200 && event.changedTouches.length === 1) {
+                const touch = event.changedTouches[0];
+                // Create a synthetic mouse event for the tooltip
+                const mouseEvent = {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    preventDefault: () => {}
+                };
+                onClick(mouseEvent);
+            }
         }
 
         function closeArchitectureView() {
@@ -6214,6 +6562,10 @@
             // Remove architecture canvas mouse listeners
             architectureCanvas.removeEventListener('mousemove', onMouseMove, false);
             architectureCanvas.removeEventListener('click', onClick, false);
+            
+            // Remove touch listeners
+            architectureCanvas.removeEventListener('touchstart', onTouchStart, false);
+            architectureCanvas.removeEventListener('touchend', onTouchEnd, false);
             
             // Hide any open tooltip
             hideTooltip();
