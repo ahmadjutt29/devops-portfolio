@@ -651,9 +651,10 @@
 
         @media (max-width: 768px) {
             .side-nav {
+                position: fixed;
                 right: 20px;
                 left: auto;
-                top: 70px;
+                top: 75px;
                 bottom: auto;
                 transform: none;
                 opacity: 0;
@@ -662,6 +663,10 @@
                 max-height: 60vh;
                 overflow-y: auto;
                 pointer-events: none;
+                z-index: 250;
+                background: var(--bg-elevated);
+                border: 1px solid var(--secondary);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             }
             
             .side-nav.open {
@@ -672,6 +677,24 @@
             
             .side-nav-toggle {
                 display: flex;
+            }
+            
+            /* Show tooltip labels on mobile */
+            .side-nav-link::after {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                background: transparent;
+                border: none;
+                padding: 0;
+                margin-left: 10px;
+            }
+            
+            .side-nav-link {
+                width: auto;
+                padding: 10px 15px;
+                justify-content: flex-start;
+                gap: 10px;
             }
         }
 
