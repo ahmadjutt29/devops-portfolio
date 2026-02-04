@@ -640,6 +640,53 @@
             transition: all 0.3s ease;
         }
         
+        /* Show toggle on touch devices regardless of screen size */
+        .touch-device .side-nav-toggle {
+            display: flex !important;
+        }
+        
+        .touch-device .side-nav {
+            position: fixed;
+            right: 20px;
+            left: auto;
+            top: 75px;
+            bottom: auto;
+            transform: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            max-height: 60vh;
+            overflow-y: auto;
+            pointer-events: none;
+            z-index: 250;
+            background: var(--bg-elevated);
+            border: 1px solid var(--secondary);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .touch-device .side-nav.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        .touch-device .side-nav-link::after {
+            position: static;
+            opacity: 1;
+            visibility: visible;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin-left: 10px;
+        }
+        
+        .touch-device .side-nav-link {
+            width: auto;
+            padding: 10px 15px;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+        
         .side-nav-toggle:hover {
             transform: scale(1.05);
             box-shadow: 0 6px 20px var(--glow-strong);
@@ -3867,6 +3914,13 @@
                 sideNavToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
             }
         }
+        
+        // Detect touch device and add class to body
+        (function() {
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
+                document.body.classList.add('touch-device');
+            }
+        })();
 
         // Mode Toggle with localStorage persistence
         function toggleMode() {
