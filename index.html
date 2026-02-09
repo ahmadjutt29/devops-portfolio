@@ -3881,17 +3881,18 @@
                     </a>
                 </div>
                 
-                <form action="/submit" method="post" aria-label="Contact form">
+                <form id="contact-form" aria-label="Contact form">
                     <label for="contact-name" class="visually-hidden">Your Name</label>
-                    <input type="text" id="contact-name" name="name" placeholder="Name" required aria-required="true">
+                    <input type="text" id="contact-name" name="from_name" placeholder="Name" required aria-required="true">
                     
                     <label for="contact-email" class="visually-hidden">Your Email</label>
-                    <input type="email" id="contact-email" name="email" placeholder="Email" required aria-required="true">
+                    <input type="email" id="contact-email" name="reply_to" placeholder="Email" required aria-required="true">
                     
                     <label for="contact-message" class="visually-hidden">Your Message</label>
                     <textarea id="contact-message" name="message" placeholder="Message" required aria-required="true"></textarea>
                     
-                    <button type="submit"><i class="fas fa-paper-plane"></i> SEND MESSAGE</button>
+                    <button type="submit" id="submit-btn"><i class="fas fa-paper-plane"></i> SEND MESSAGE</button>
+                    <div id="form-status" style="margin-top: 15px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.85rem;"></div>
                 </form>
             </div>
         </section>
@@ -3925,6 +3926,9 @@
         </div>
     </footer>
 
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -6883,6 +6887,54 @@
                 archCamera.updateProjectionMatrix();
                 archRenderer.setSize(window.innerWidth, window.innerHeight);
             }
+        });
+
+        // ===========================================
+        // EMAILJS CONTACT FORM INTEGRATION
+        // ===========================================
+        
+        // Initialize EmailJS with your Public Key
+        (function() {
+            emailjs.init("ZJXP4lrBqW6hkH-Dt");
+        })();
+
+        // Handle contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const formStatus = document.getElementById('form-status');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SENDING...';
+            formStatus.innerHTML = '';
+            formStatus.style.color = '';
+            
+            // EmailJS send
+            emailjs.sendForm('service_cogypy9', 'template_clnf9a6', this)
+                .then(function() {
+                    // Success
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> MESSAGE SENT!';
+                    formStatus.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';
+                    formStatus.style.color = 'var(--tertiary)';
+                    
+                    // Reset form
+                    document.getElementById('contact-form').reset();
+                    
+                    // Reset button after 3 seconds
+                    setTimeout(function() {
+                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> SEND MESSAGE';
+                    }, 3000);
+                }, function(error) {
+                    // Error
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> SEND MESSAGE';
+                    formStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Oops! Something went wrong. Please try again.';
+                    formStatus.style.color = '#ef4444';
+                    console.error('EmailJS Error:', error);
+                });
         });
     </script>
 </body>
