@@ -4385,13 +4385,47 @@
         // Git → CI/CD → Registry → K8s Cluster | Lambda (separate)
         // ===========================================
 
+        // WebGL availability check
+        function isWebGLAvailable() {
+            try {
+                var canvas = document.createElement('canvas');
+                return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+            } catch (e) {
+                return false;
+            }
+        }
+
+        var webglAvailable = isWebGLAvailable();
+
+        if (!webglAvailable) {
+            console.warn('WebGL is not available. 3D visualization disabled.');
+            var webglCanvas = document.querySelector('#webgl');
+            if (webglCanvas) webglCanvas.style.display = 'none';
+            var archBtn = document.getElementById('viewArchitectureBtn');
+            if (archBtn) archBtn.style.display = 'none';
+            var legendEl = document.querySelector('.legend-3d');
+            if (legendEl) legendEl.style.display = 'none';
+        }
+
+        if (webglAvailable) {
+        // Start of WebGL-dependent code block
+        try {
+
         // 1. Setup Scene
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 3, 22); // Start further back for cloud view
         camera.lookAt(0, 1, 0);
 
-        const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('#webgl'), antialias: true, alpha: true });
+        const webglCanvas = document.querySelector('#webgl');
+        const renderer = new THREE.WebGLRenderer({
+            canvas: webglCanvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: 'default',
+            failIfMajorPerformanceCaveat: false,
+            preserveDrawingBuffer: true
+        });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -6682,6 +6716,7 @@
         let savedMaterialStates = new Map();
 
         function initArchitectureView() {
+            try {
             // Create a separate camera for architecture view
             archCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
             archCamera.position.set(25, 18, 30);
@@ -6690,7 +6725,10 @@
             archRenderer = new THREE.WebGLRenderer({
                 canvas: architectureCanvas,
                 antialias: true,
-                alpha: true
+                alpha: true,
+                powerPreference: 'default',
+                failIfMajorPerformanceCaveat: false,
+                preserveDrawingBuffer: true
             });
             archRenderer.setSize(window.innerWidth, window.innerHeight);
             archRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -6706,6 +6744,11 @@
             archControls.autoRotate = false;
             archControls.autoRotateSpeed = 1.5;
             archControls.target.set(0, 0, 0);
+            } catch (archError) {
+                console.error('Failed to initialize architecture view WebGL:', archError);
+                archRenderer = null;
+                archCamera = null;
+            }
         }
 
         function revealAllObjects() {
@@ -7020,6 +7063,18 @@
                 archRenderer.setSize(window.innerWidth, window.innerHeight);
             }
         });
+
+        } catch (webglError) {
+            // Graceful fallback: hide 3D elements, page still works
+            console.error('WebGL 3D visualization failed to initialize:', webglError);
+            var webglCanvas = document.querySelector('#webgl');
+            if (webglCanvas) webglCanvas.style.display = 'none';
+            var archBtn = document.getElementById('viewArchitectureBtn');
+            if (archBtn) archBtn.style.display = 'none';
+            var legendEl = document.querySelector('.legend-3d');
+            if (legendEl) legendEl.style.display = 'none';
+        }
+        } // end of if (webglAvailable)
 
         // ===========================================
         // EMAILJS CONTACT FORM INTEGRATION
